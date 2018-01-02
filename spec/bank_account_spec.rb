@@ -25,11 +25,10 @@ describe BankAccount do
         end
       end
     end
-
   end
 
   describe '#deposit' do
-    describe 'can pass in an amount to deposit, which is then added to the balance' do
+    describe 'can deposit an amount, which is then added to the balance' do
       context 'when a user deposits £10 to an account with 0 balance' do
         it 'updates the balance to 10' do
           expect { account.deposit(10) }
@@ -57,6 +56,18 @@ describe BankAccount do
           account = described_class.new(75)
           account.deposit(25)
           expect(account.balance).to eq(100)
+        end
+      end
+    end
+  end
+
+  describe '#withdraw' do
+    let(:account) { described_class.new(100) }
+    describe 'can withdraw an amount, which is taken away from the balance' do
+      context 'when a user withdraws 10 from an account with 100' do
+        it 'updates the balance to 90' do
+          account.withdraw(10)
+          expect(account.balance).to eq(90)
         end
       end
     end
