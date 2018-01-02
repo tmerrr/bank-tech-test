@@ -36,6 +36,29 @@ describe BankAccount do
             .to change { account.balance }.by(10)
         end
       end
+
+      context 'when a user deposits £20 to an account with 0 balance' do
+        it 'updates the balance to 20' do
+          expect { account.deposit(20) }
+            .to change { account.balance }.by(20)
+        end
+      end
+
+      context 'when a user deposits £10 to an account with £50 balance' do
+        it 'updates the balance to 60' do
+          account = described_class.new(50)
+          account.deposit(10)
+          expect(account.balance).to eq(60)
+        end
+      end
+
+      context 'when a user deposits £25 to an account with £75 balance' do
+        it 'updates the balance to 60' do
+          account = described_class.new(75)
+          account.deposit(25)
+          expect(account.balance).to eq(100)
+        end
+      end
     end
   end
 end
