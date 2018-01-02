@@ -84,11 +84,22 @@ describe BankAccount do
           expect(account.balance).to eq(30)
         end
       end
+    end
 
-      context 'when a user tries to withdraw an amount higher than the current balance' do
-        it 'throws an error' do
-          expect { account.withdraw(101) }
-            .to raise_error 'Insufficient Funds Available'
+    context 'when a user tries to withdraw an amount higher than the current balance' do
+      it 'throws an error' do
+        expect { account.withdraw(101) }
+        .to raise_error 'Insufficient Funds Available'
+      end
+    end
+  end
+
+  describe '#statement' do
+    describe 'returns a list of transactions with dates' do
+      context 'when there are no transactions' do
+        it 'returns just the headers for each column' do
+          expect { account.statement }
+          .to output("date || credit || debit || balance\n").to_stdout
         end
       end
     end
