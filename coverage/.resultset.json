@@ -1,7 +1,27 @@
 {
   "RSpec": {
     "coverage": {
+      "/Users/tom/Makers/week10/bank/spec/bank_account_spec.rb": [
+        1,
+        null,
+        1,
+        1,
+        1,
+        1,
+        1,
+        null,
+        null,
+        null,
+        null
+      ],
+      "/Users/tom/Makers/week10/bank/lib/bank_account.rb": [
+        1,
+        1,
+        1,
+        null,
+        null
+      ]
     },
-    "timestamp": 1514888731
+    "timestamp": 1514889733
   }
 }
