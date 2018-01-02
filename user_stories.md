@@ -1,5 +1,6 @@
 # User Stories:
 
+* An account can be created with a set amount
 * A user can deposit a specified amount
 * A user can withdraw a specified amount
 * A user can view their current balance
