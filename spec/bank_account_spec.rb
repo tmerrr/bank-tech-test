@@ -70,6 +70,20 @@ describe BankAccount do
           expect(account.balance).to eq(90)
         end
       end
+
+      context 'when a user withdraws 25 from an account with 100' do
+        it 'updates the balance to 75' do
+          account.withdraw(25)
+          expect(account.balance).to eq(75)
+        end
+      end
+
+      context 'when a user withdraws 70 from an account with 100' do
+        it 'updates the balance to 30' do
+          account.withdraw(70)
+          expect(account.balance).to eq(30)
+        end
+      end
     end
   end
 end

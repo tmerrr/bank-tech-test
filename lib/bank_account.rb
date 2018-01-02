@@ -11,6 +11,6 @@ class BankAccount
   end
 
   def withdraw(amount)
-    @balance = 90
+    @balance -= amount
   end
 end
