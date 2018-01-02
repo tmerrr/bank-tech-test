@@ -23,6 +23,5 @@ describe BankAccount do
         expect(account.balance).to eq(25)
       end
     end
-
   end
 end
