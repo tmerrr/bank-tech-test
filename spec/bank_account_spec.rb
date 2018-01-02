@@ -96,6 +96,8 @@ describe BankAccount do
 
   describe '#statement' do
     let(:header) { "date || credit || debit || balance\n" }
+    let(:date) { Time.now.strftime("%d/%m/%Y") }
+
     describe 'prints a list of transactions with dates' do
       context 'when there are no transactions' do
         it 'prints just the headers for each column' do
@@ -108,8 +110,19 @@ describe BankAccount do
         it 'prints the headers and the details of the deposit' do
           account.deposit(10)
           resulting_string = header +
-            "#{Time.now.day}/#{Time.now.month}/#{Time.now.year}" +
-            " || 10.00 || || 10.00\n"
+            "#{date} || 10.00 ||  || 10.00\n"
+          expect { account.statement }
+            .to output(resulting_string).to_stdout
+        end
+      end
+
+      context 'after a user has made a deposit and withdrawal of 10' do
+        it 'prints the headers and the details of both transactions' do
+          account.deposit(10)
+          account.withdraw(10)
+          resulting_string = header +
+            "#{date} || 10.00 ||  || 10.00\n" +
+            "#{date} ||  || 10.00 || 0.00\n"
           expect { account.statement }
             .to output(resulting_string).to_stdout
         end
