@@ -39,7 +39,7 @@ describe BankAccount do
 
         it 'creates an instance of Transaction' do
           expect(transaction_class).to receive(:new)
-            .with(credit: 10, balance: 10)
+            .with(credit: 10, debit: nil, balance: 10)
           account.deposit(10)
         end
       end
@@ -60,7 +60,7 @@ describe BankAccount do
 
         it 'creates an instance of Transaction' do
           expect(transaction_class).to receive(:new)
-            .with(credit: 10, balance: 60)
+            .with(credit: 10, debit: nil, balance: 60)
           account.deposit(10)
         end
       end
@@ -74,7 +74,7 @@ describe BankAccount do
 
         it 'creates an instance of Transaction' do
           expect(transaction_class).to receive(:new)
-            .with(credit: 25, balance: 100)
+            .with(credit: 25, debit: nil, balance: 100)
           account.deposit(25)
         end
       end
@@ -92,7 +92,7 @@ describe BankAccount do
 
         it 'creates an instance of Transaction' do
           expect(transaction_class).to receive(:new)
-            .with(debit: 10, balance: 90)
+            .with(credit: nil, debit: 10, balance: 90)
           account.withdraw(10)
         end
       end
@@ -105,7 +105,7 @@ describe BankAccount do
 
         it 'creates an instance of Transaction' do
           expect(transaction_class).to receive(:new)
-            .with(debit: 25, balance: 75)
+            .with(credit: nil, debit: 25, balance: 75)
           account.withdraw(25)
         end
       end

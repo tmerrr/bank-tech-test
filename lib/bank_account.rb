@@ -12,17 +12,27 @@ class BankAccount
 
   def deposit(amount)
     @balance += amount
-    @transactions << @transaction_class.new(credit: amount, balance: @balance)
+    record_transaction(credit: amount)
   end
 
   def withdraw(amount)
     raise 'Insufficient Funds Available' if @balance < amount
     @balance -= amount
-    @transactions << @transaction_class.new(debit: amount, balance: @balance)
+    record_transaction(debit: amount)
   end
 
   def statement
     puts 'date || credit || debit || balance'
     @transactions.reverse_each(&:print_details)
+  end
+
+  private
+
+  def record_transaction(credit: nil, debit: nil)
+    @transactions << @transaction_class.new(
+      credit: credit,
+      debit: debit,
+      balance: @balance
+    )
   end
 end

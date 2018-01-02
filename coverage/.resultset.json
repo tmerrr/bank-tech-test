@@ -183,6 +183,16 @@
         2,
         2,
         null,
+        null,
+        1,
+        null,
+        1,
+        null,
+        null,
+        null,
+        null,
+        13,
+        null,
         null
       ],
       "/Users/tom/Makers/week10/bank/lib/transaction.rb": [
@@ -206,7 +216,6 @@
         null,
         1,
         1,
-        null,
         8,
         null,
         null,
@@ -269,6 +278,6 @@
         null
       ]
     },
-    "timestamp": 1514914539
+    "timestamp": 1514915207
   }
 }
