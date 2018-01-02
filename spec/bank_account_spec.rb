@@ -84,6 +84,13 @@ describe BankAccount do
           expect(account.balance).to eq(30)
         end
       end
+
+      context 'when a user tries to withdraw an amount higher than the current balance' do
+        it 'throws an error' do
+          expect { account.withdraw(101) }
+            .to raise_error 'Insufficient Funds Available'
+        end
+      end
     end
   end
 end
