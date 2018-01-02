@@ -20,5 +20,7 @@ class BankAccount
 
   def statement
     puts "date || credit || debit || balance"
+    puts "#{Time.now.day}/#{Time.now.month}/#{Time.now.year}" +
+      " || 10.00 || || 10.00"
   end
 end

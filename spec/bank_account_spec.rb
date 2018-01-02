@@ -95,11 +95,23 @@ describe BankAccount do
   end
 
   describe '#statement' do
-    describe 'returns a list of transactions with dates' do
+    let(:header) { "date || credit || debit || balance\n" }
+    describe 'prints a list of transactions with dates' do
       context 'when there are no transactions' do
-        it 'returns just the headers for each column' do
+        it 'prints just the headers for each column' do
           expect { account.statement }
-          .to output("date || credit || debit || balance\n").to_stdout
+          .to output(header).to_stdout
+        end
+      end
+
+      context 'after a user has made a deposit of 10' do
+        it 'prints the headers and the details of the deposit' do
+          account.deposit(10)
+          resulting_string = header +
+            "#{Time.now.day}/#{Time.now.month}/#{Time.now.year}" +
+            " || 10.00 || || 10.00\n"
+          expect { account.statement }
+            .to output(resulting_string).to_stdout
         end
       end
     end
