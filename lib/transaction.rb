@@ -1,12 +1,14 @@
+require_relative 'helpers'
+
 class Transaction
   def initialize(credit: nil, debit: nil, balance: nil)
     @date     = Time.now
-    @credit   = credit
-    @debit    = debit
-    @balance  = balance
+    @credit   = credit.to_currency
+    @debit    = debit.to_currency
+    @balance  = balance.to_currency
   end
 
   def print_details
-    puts "02/01/2018 || 10.00 ||  || 20.00"
+    puts "#{@date} || #{@credit} || #{@debit} || #{@balance}"
   end
 end

@@ -9,3 +9,8 @@ class Integer
     self.to_f.to_currency
   end
 end
+
+class NilClass
+  def to_currency
+  end
+end
