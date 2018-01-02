@@ -1,5 +1,35 @@
 # Bank tech test
 
+The below task has now been completed.
+
+## Instructions to get started:
+
+Create an account:
+
+```
+<account_name> = BankAccount.new(<enter a starting balance or leave blank to start from 0>)
+```
+
+Make a deposit:
+
+```
+<account_name>.deposit(<value>)
+```
+
+Make a withdrawal:
+
+```
+<account_name>.withdraw(<value>)
+```
+
+Print statement:
+
+```
+<account_name>.statement
+```
+
+## Task:
+
 Today, you'll practice doing a tech test.
 
 For most tech tests, you'll essentially have unlimited time.  This practice session is about producing the best code you can when there is a minimal time pressure.
