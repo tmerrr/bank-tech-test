@@ -22,7 +22,7 @@ class BankAccount
   end
 
   def statement
-    puts "date || credit || debit || balance"
-    @transactions.each { |t| t.print_details }
+    puts 'date || credit || debit || balance'
+    @transactions.reverse_each(&:print_details)
   end
 end

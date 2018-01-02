@@ -1,5 +1,6 @@
 require_relative 'helpers'
 
+# Extracted a Transaction into its own class
 class Transaction
   def initialize(credit: nil, debit: nil, balance: nil)
     @date     = Time.now

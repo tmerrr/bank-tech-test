@@ -20,7 +20,7 @@ describe Transaction do
       end
     end
 
-    context 'when the transaction is a £25 withdrawal and balance is £65.5' do
+    context 'when the transaction is a £25 withdrawal and balance is £65.50' do
       it 'prints the details of the transaction' do
         allow(Time).to receive(:now).and_return('22/08/2017')
         transaction = described_class.new(debit: 25, balance: 65.5)
@@ -29,7 +29,7 @@ describe Transaction do
       end
     end
 
-    context 'when the transaction is a £65.23 withdrawal and balance is £4.77' do
+    context 'when the transaction is £65.23 withdrawal and balance is £4.77' do
       it 'prints the details of the transaction' do
         allow(Time).to receive(:now).and_return('12/10/2017')
         transaction = described_class.new(debit: 65.23, balance: 4.77)

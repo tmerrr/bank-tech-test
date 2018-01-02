@@ -38,7 +38,8 @@ describe BankAccount do
         end
 
         it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new).with(credit: 10, balance: 10)
+          expect(transaction_class).to receive(:new)
+            .with(credit: 10, balance: 10)
           account.deposit(10)
         end
       end
@@ -58,7 +59,8 @@ describe BankAccount do
         end
 
         it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new).with(credit: 10, balance: 60)
+          expect(transaction_class).to receive(:new)
+            .with(credit: 10, balance: 60)
           account.deposit(10)
         end
       end
@@ -71,7 +73,8 @@ describe BankAccount do
         end
 
         it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new).with(credit: 25, balance: 100)
+          expect(transaction_class).to receive(:new)
+            .with(credit: 25, balance: 100)
           account.deposit(25)
         end
       end
@@ -88,7 +91,8 @@ describe BankAccount do
         end
 
         it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new).with(debit: 10, balance: 90)
+          expect(transaction_class).to receive(:new)
+            .with(debit: 10, balance: 90)
           account.withdraw(10)
         end
       end
@@ -100,7 +104,8 @@ describe BankAccount do
         end
 
         it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new).with(debit: 25, balance: 75)
+          expect(transaction_class).to receive(:new)
+            .with(debit: 25, balance: 75)
           account.withdraw(25)
         end
       end
@@ -113,23 +118,22 @@ describe BankAccount do
       end
     end
 
-    context 'when a user tries to withdraw an amount higher than the current balance' do
+    context 'if a user withdraws an amount higher than the current balance' do
       it 'throws an error' do
         expect { account.withdraw(101) }
-        .to raise_error 'Insufficient Funds Available'
+          .to raise_error 'Insufficient Funds Available'
       end
     end
   end
 
   describe '#statement' do
     let(:header) { "date || credit || debit || balance\n" }
-    let(:date) { Time.now.strftime("%d/%m/%Y") }
 
     describe 'prints a list of transactions with dates' do
       context 'when there are no transactions' do
         it 'prints just the headers for each column' do
           expect { account.statement }
-          .to output(header).to_stdout
+            .to output(header).to_stdout
         end
       end
 
