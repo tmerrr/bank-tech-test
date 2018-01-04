@@ -1,7 +1,7 @@
 {
   "RSpec": {
     "coverage": {
-      "/Users/tom/Makers/week10/bank/spec/bank_account_spec.rb": [
+      "/Users/tom/Makers/week10/bank-tech-test/spec/bank_account_spec.rb": [
         1,
         null,
         1,
@@ -141,6 +141,7 @@
         null,
         null,
         null,
+        1,
         1,
         1,
         1,
@@ -155,7 +156,7 @@
         null,
         null
       ],
-      "/Users/tom/Makers/week10/bank/lib/bank_account.rb": [
+      "/Users/tom/Makers/week10/bank-tech-test/lib/bank_account.rb": [
         1,
         null,
         null,
@@ -195,7 +196,7 @@
         null,
         null
       ],
-      "/Users/tom/Makers/week10/bank/lib/transaction.rb": [
+      "/Users/tom/Makers/week10/bank-tech-test/lib/transaction.rb": [
         1,
         null,
         null,
@@ -212,7 +213,7 @@
         null,
         null
       ],
-      "/Users/tom/Makers/week10/bank/lib/helpers.rb": [
+      "/Users/tom/Makers/week10/bank-tech-test/lib/helpers.rb": [
         null,
         1,
         1,
@@ -234,7 +235,7 @@
         1,
         null
       ],
-      "/Users/tom/Makers/week10/bank/spec/transaction_spec.rb": [
+      "/Users/tom/Makers/week10/bank-tech-test/spec/transaction_spec.rb": [
         1,
         null,
         1,
@@ -278,6 +279,6 @@
         null
       ]
     },
-    "timestamp": 1514916558
+    "timestamp": 1515059088
   }
 }
