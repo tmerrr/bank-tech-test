@@ -45,7 +45,7 @@ describe BankAccount do
 
         it 'the TransactionLog records the transaction' do
           expect(transaction_log).to receive(:record_transaction)
-            .with(credit: 10, current_balance: 10)
+            .with(credit: 10, debit: nil, current_balance: 10)
           account.deposit(10)
         end
       end
@@ -86,7 +86,7 @@ describe BankAccount do
 
         it 'creates an instance of Transaction' do
           expect(transaction_log).to receive(:record_transaction)
-            .with(debit: 10, current_balance: 90)
+            .with(credit: nil, debit: 10, current_balance: 90)
           account.withdraw(10)
         end
       end
