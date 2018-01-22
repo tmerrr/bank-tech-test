@@ -32,4 +32,22 @@ describe Balance do
       end
     end
   end
+
+  describe '#subtract' do
+    let(:balance) { described_class.new(50) }
+
+    context 'when subtracting 20' do
+      it 'will reduce the total by 20' do
+        expect { balance.subtract(20) }
+          .to change { balance.total }.by(-20)
+      end
+    end
+
+    context 'when subtracting 40' do
+      it 'will reduce the total by 40' do
+        expect { balance.subtract(40) }
+          .to change { balance.total }.by(-40)
+      end
+    end
+  end
 end

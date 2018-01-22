@@ -8,4 +8,8 @@ class Balance
   def add(value)
     @total += value
   end
+
+  def subtract(value)
+    @total -= value
+  end
 end
