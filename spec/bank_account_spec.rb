@@ -2,8 +2,14 @@ require 'bank_account'
 
 describe BankAccount do
   let(:transaction) { double(:transaction) }
-  let(:transaction_class) { double(:transaction_class, new: transaction) }
-  subject(:account) { described_class.new(0, transaction_class) }
+  let(:transaction_log) {
+    double(:transaction_log, record_transaction: transaction)
+  }
+  let(:transaction_log_class) {
+    double(:transaction_log_class, new: transaction_log)
+  }
+
+  subject(:account) { described_class.new(0, transaction_log_class) }
 
   describe '#balance' do
     describe 'used to return the current balance' do
@@ -37,9 +43,9 @@ describe BankAccount do
             .to change { account.balance }.by(10)
         end
 
-        it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new)
-            .with(credit: 10, debit: nil, balance: 10)
+        it 'the TransactionLog records the transaction' do
+          expect(transaction_log).to receive(:record_transaction)
+            .with(credit: 10, current_balance: 10)
           account.deposit(10)
         end
       end
@@ -52,37 +58,25 @@ describe BankAccount do
       end
 
       context 'when a user deposits £10 to an account with £50 balance' do
-        let(:account) { described_class.new(50, transaction_class) }
+        let(:account) { described_class.new(50, transaction_log_class) }
         it 'updates the balance to 60' do
           account.deposit(10)
           expect(account.balance).to eq(60)
         end
-
-        it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new)
-            .with(credit: 10, debit: nil, balance: 60)
-          account.deposit(10)
-        end
       end
 
       context 'when a user deposits £25 to an account with £75 balance' do
-        let(:account) { described_class.new(75, transaction_class) }
+        let(:account) { described_class.new(75, transaction_log_class) }
         it 'updates the balance to 60' do
           account.deposit(25)
           expect(account.balance).to eq(100)
-        end
-
-        it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new)
-            .with(credit: 25, debit: nil, balance: 100)
-          account.deposit(25)
         end
       end
     end
   end
 
   describe '#withdraw' do
-    let(:account) { described_class.new(100, transaction_class) }
+    let(:account) { described_class.new(100, transaction_log_class) }
     describe 'can withdraw an amount, which is taken away from the balance' do
       context 'when a user withdraws 10 from an account with 100' do
         it 'updates the balance to 90' do
@@ -91,8 +85,8 @@ describe BankAccount do
         end
 
         it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new)
-            .with(credit: nil, debit: 10, balance: 90)
+          expect(transaction_log).to receive(:record_transaction)
+            .with(debit: 10, current_balance: 90)
           account.withdraw(10)
         end
       end
@@ -101,12 +95,6 @@ describe BankAccount do
         it 'updates the balance to 75' do
           account.withdraw(25)
           expect(account.balance).to eq(75)
-        end
-
-        it 'creates an instance of Transaction' do
-          expect(transaction_class).to receive(:new)
-            .with(credit: nil, debit: 25, balance: 75)
-          account.withdraw(25)
         end
       end
 
@@ -130,6 +118,12 @@ describe BankAccount do
     let(:header) { "date || credit || debit || balance\n" }
 
     describe 'prints a list of transactions with dates' do
+      before(:each) do
+        allow(transaction_log).to receive(:history)
+          .and_return([transaction])
+        allow(transaction).to receive(:print_details)
+      end
+
       context 'when there are no transactions' do
         it 'prints just the headers for each column' do
           expect { account.statement }
@@ -138,11 +132,8 @@ describe BankAccount do
       end
 
       context 'after a user has made a deposit' do
-        before(:each) do
-          account.deposit(10)
-        end
-
         it 'prints the headers and the details of the deposit' do
+          account.deposit(10)
           expect(transaction).to receive(:print_details)
           account.statement
         end
