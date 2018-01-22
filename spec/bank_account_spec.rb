@@ -9,100 +9,80 @@ describe BankAccount do
     double(:transaction_log_class, new: transaction_log)
   }
 
-  subject(:account) { described_class.new(0, transaction_log_class) }
+  let(:balance)       { double(:balance, total: 100) }
+  let(:balance_class) { double(:balance_class, new: balance) }
 
-  describe '#balance' do
-    describe 'used to return the current balance' do
-      context 'after a new account is created' do
-        it 'returns 0' do
-          expect(account.balance).to eq(0)
-        end
-      end
+  subject(:account) {
+    described_class.new(
+      0,
+      balance_class,
+      transaction_log_class
+    )
+  }
 
-      context 'when an account is created with 10' do
-        it 'returns 10' do
-          account = described_class.new(10)
-          expect(account.balance).to eq(10)
-        end
+  describe 'starting values / properties' do
+    context 'when passed initialized with a value of 10' do
+      it 'passes 25 into the new instance of Balance' do
+        expect(balance_class)
+          .to receive(:new).with(10)
+        described_class.new(
+          10,
+          balance_class,
+          transaction_log_class
+        )
       end
+    end
 
-      context 'when an account is created with 25' do
-        it 'returns 25' do
-          account = described_class.new(25)
-          expect(account.balance).to eq(25)
-        end
+    context 'when passed initialized with a value of 25' do
+      it 'passes 25 into the new instance of Balance' do
+        expect(balance_class)
+          .to receive(:new).with(25)
+        described_class.new(
+          25,
+          balance_class,
+          transaction_log_class
+        )
       end
+    end
+  end
+
+  describe '#current_balance' do
+    it 'looks at the total of the Balance class' do
+      expect(balance).to receive(:total)
+      account.current_balance
     end
   end
 
   describe '#deposit' do
-    describe 'can deposit an amount, which is then added to the balance' do
-      context 'when a user deposits £10 to an account with 0 balance' do
-        it 'updates the balance to 10' do
-          expect { account.deposit(10) }
-            .to change { account.balance }.by(10)
-        end
+    before(:each) do
+      allow(balance).to receive(:add)
+    end
+    it 'calls the #add method on the balance with a value of 10' do
+      expect(balance).to receive(:add).with(10)
+      account.deposit(10)
+    end
 
-        it 'the TransactionLog records the transaction' do
-          expect(transaction_log).to receive(:record_transaction)
-            .with(credit: 10, debit: nil, current_balance: 10)
-          account.deposit(10)
-        end
-      end
-
-      context 'when a user deposits £20 to an account with 0 balance' do
-        it 'updates the balance to 20' do
-          expect { account.deposit(20) }
-            .to change { account.balance }.by(20)
-        end
-      end
-
-      context 'when a user deposits £10 to an account with £50 balance' do
-        let(:account) { described_class.new(50, transaction_log_class) }
-        it 'updates the balance to 60' do
-          account.deposit(10)
-          expect(account.balance).to eq(60)
-        end
-      end
-
-      context 'when a user deposits £25 to an account with £75 balance' do
-        let(:account) { described_class.new(75, transaction_log_class) }
-        it 'updates the balance to 60' do
-          account.deposit(25)
-          expect(account.balance).to eq(100)
-        end
-      end
+    it 'the TransactionLog records the transaction' do
+      allow(balance).to receive(:total).and_return(10)
+      expect(transaction_log).to receive(:record_transaction)
+        .with(credit: 10, debit: nil, balance: 10)
+      account.deposit(10)
     end
   end
 
   describe '#withdraw' do
-    let(:account) { described_class.new(100, transaction_log_class) }
-    describe 'can withdraw an amount, which is taken away from the balance' do
-      context 'when a user withdraws 10 from an account with 100' do
-        it 'updates the balance to 90' do
-          account.withdraw(10)
-          expect(account.balance).to eq(90)
-        end
-
-        it 'creates an instance of Transaction' do
-          expect(transaction_log).to receive(:record_transaction)
-            .with(credit: nil, debit: 10, current_balance: 90)
-          account.withdraw(10)
-        end
+    let(:account) { described_class.new(100, balance_class, transaction_log_class) }
+    context 'when a user withdraws 10 from an account with 100' do
+      it 'calls the subtract method on the Balance, with a value of 10' do
+        expect(balance).to receive(:subtract).with(10)
+        account.withdraw(10)
       end
 
-      context 'when a user withdraws 25 from an account with 100' do
-        it 'updates the balance to 75' do
-          account.withdraw(25)
-          expect(account.balance).to eq(75)
-        end
-      end
-
-      context 'when a user withdraws 70 from an account with 100' do
-        it 'updates the balance to 30' do
-          account.withdraw(70)
-          expect(account.balance).to eq(30)
-        end
+      it 'creates an instance of Transaction' do
+        allow(balance).to receive_messages(subtract: nil, total: 90)
+        expect(transaction_log).to receive(:record_transaction)
+          .with(credit: nil, debit: 10, balance: 90)
+        account.withdraw(10)
       end
     end
 
@@ -133,7 +113,6 @@ describe BankAccount do
 
       context 'after a user has made a deposit' do
         it 'prints the headers and the details of the deposit' do
-          account.deposit(10)
           expect(transaction).to receive(:print_details)
           account.statement
         end

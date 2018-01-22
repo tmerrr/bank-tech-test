@@ -8,11 +8,15 @@ class TransactionLog
     @transaction_class = transaction_class
   end
 
-  def record_transaction(credit: nil, debit: nil, current_balance: nil)
+  def record_transaction(
+    credit: nil,
+    debit: nil,
+    balance: nil
+  )
     @history << @transaction_class.new(
       credit: credit,
       debit: debit,
-      current_balance: current_balance
+      balance: balance
     )
   end
 end
