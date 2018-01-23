@@ -12,9 +12,3 @@ class Integer
     to_f.to_currency
   end
 end
-
-# Added the same method to NilClass so the method can be called,
-# but does nothing
-class NilClass
-  def to_currency; end
-end

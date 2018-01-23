@@ -11,7 +11,7 @@ Create an account:
 View balance:
 
 ```
-<account_name>.balance
+<account_name>.current_balance
 ```
 
 Make a deposit:
