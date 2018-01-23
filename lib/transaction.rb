@@ -10,8 +10,4 @@ class Transaction
     @debit    = debit
     @balance  = balance
   end
-
-  def print_details
-    puts "#{@date} || #{@credit} || #{@debit} || #{@balance}"
-  end
 end

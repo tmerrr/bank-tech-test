@@ -12,23 +12,28 @@ describe BankAccount do
   let(:balance)       { double(:balance, total: 100) }
   let(:balance_class) { double(:balance_class, new: balance) }
 
+  let(:printer)       { double(:printer) }
+  let(:printer_class) { double(:printer_class, new: printer) }
+
   subject(:account) {
     described_class.new(
       0,
       balance_class,
-      transaction_log_class
+      transaction_log_class,
+      printer_class
     )
   }
 
   describe 'starting values / properties' do
     context 'when passed initialized with a value of 10' do
-      it 'passes 25 into the new instance of Balance' do
+      it 'passes 10 into the new instance of Balance' do
         expect(balance_class)
           .to receive(:new).with(10)
         described_class.new(
           10,
           balance_class,
-          transaction_log_class
+          transaction_log_class,
+          printer_class
         )
       end
     end
@@ -40,7 +45,32 @@ describe BankAccount do
         described_class.new(
           25,
           balance_class,
-          transaction_log_class
+          transaction_log_class,
+          printer_class
+        )
+      end
+    end
+
+    context 'when initialized' do
+      it 'instantiates a new TransactionLog' do
+        expect(transaction_log_class)
+          .to receive(:new)
+        described_class.new(
+          25,
+          balance_class,
+          transaction_log_class,
+          printer_class
+        )
+      end
+
+      it 'instantiates a new Printer' do
+        expect(printer_class)
+          .to receive(:new)
+        described_class.new(
+          25,
+          balance_class,
+          transaction_log_class,
+          printer_class
         )
       end
     end
@@ -95,27 +125,28 @@ describe BankAccount do
   end
 
   describe '#statement' do
-    let(:header) { "date || credit || debit || balance\n" }
+    it 'calls #print_headers on the printer' do
+      allow(transaction_log).to receive(:history).and_return([])
+      allow(printer).to receive(:print_transaction)
+      expect(printer).to receive(:print_headers)
+      account.statement
+    end
 
-    describe 'prints a list of transactions with dates' do
-      before(:each) do
-        allow(transaction_log).to receive(:history)
-          .and_return([transaction])
-        allow(transaction).to receive(:print_details)
+    context 'when there is 1 transaction in the transaction log' do
+      it 'calls #print_transaction on the transaction' do
+        allow(printer).to receive(:print_headers)
+        allow(transaction_log).to receive(:history).and_return([transaction])
+        expect(printer).to receive(:print_transaction).with(transaction).once
+        account.statement
       end
+    end
 
-      context 'when there are no transactions' do
-        it 'prints just the headers for each column' do
-          expect { account.statement }
-            .to output(header).to_stdout
-        end
-      end
-
-      context 'after a user has made a deposit' do
-        it 'prints the headers and the details of the deposit' do
-          expect(transaction).to receive(:print_details)
-          account.statement
-        end
+    context 'when there is 1 transaction in the transaction log' do
+      it 'calls #print_transaction on the transaction' do
+        allow(printer).to receive(:print_headers)
+        allow(transaction_log).to receive(:history).and_return([transaction, transaction])
+        expect(printer).to receive(:print_transaction).with(transaction).twice
+        account.statement
       end
     end
   end
